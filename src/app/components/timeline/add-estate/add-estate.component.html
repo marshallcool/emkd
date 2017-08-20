@@ -1,0 +1,46 @@
+<div class="page-container">
+
+  <div class="text-muted">
+    Добавление недвижимости - ваш первый и главный шаг в работе с нашей системой.
+    Добавив квартиру вы попадаете сообщество этого дома. 
+    Вы можете добавить несколько различных объектов недвижимости (квартиры, машиноместа и т.д.) - все они будут подключены к вашему аккаунту. 
+    Подключить их вы можете в разделе "Мой профиль".
+  </div>
+  
+  <br>
+
+  <div class="center-form">
+
+    <div class="item">
+      <label class="form-label" for="type">Выбрать тип недвижимости</label>
+      <select class="form-control" id="type" (change)="setNewType($event.target.value)">
+        <option *ngFor="let obj of types" value="{{obj.id}}">{{obj.name}}</option>
+      </select>
+    </div>
+
+    <div class="item">
+      <label class="form-label" for="address">Введите адрес</label>
+      <input type="text" class="form-control" id="address">
+    </div>
+
+    <div class="item" *ngIf="currentType?.abbreviation">
+      <form class="form-inline">
+        <div class="form-group">
+          <label class="form-label" style="width: 159px;" for="room">Номер {{currentType?.abbreviation}}.</label> <input
+          [(ngModel)]="number" (change)="checkEstate()" [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="room">
+        </div>
+      </form>
+
+    </div>
+
+    <div class="item">
+      <label class="form-label" for="comment">Комментарий</label>
+      <textarea [(ngModel)]="comment" [ngModelOptions]="{standalone: true}" class="form-control" id="comment"></textarea>
+    </div>
+
+
+    <div class="item">
+      <button class="btn btn-default" [disabled]="!isCanSave()" (click)="add()">Добавить</button>
+    </div>
+  </div>
+</div>

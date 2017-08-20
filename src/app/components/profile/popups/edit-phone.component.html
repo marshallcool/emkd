@@ -1,0 +1,118 @@
+<div class="popup">
+	<div *ngIf='step==1'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title">Изменить телефон</div>
+
+			<form class="popup-form" [formGroup]="phoneForm" (ngSubmit)="sendPhoneCode()" autocomplete="off">
+				<label [ngClass]="{'popup-hasError':!phoneForm.controls['phone'].valid && phoneForm.controls['phone'].touched}" >
+					<span class="popup-label">Введите новый номер</span>
+					<!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+					<input style="display:none" type="text" name="fakeusernameremembered"/>
+					<input style="display:none" type="password" name="fakepasswordremembered"/>
+
+					<input 
+						class="popup-input"
+						type="text"
+						formControlName="phone"
+						[placeholder]="cnst.PHONE_PLCHLDR"
+						[textMask]="{mask:cnst.PHONE_MASK}"
+						autocomplete="off"
+					/>
+					<app-input-validate
+						[control]="phoneForm.controls['phone']"
+						[touched]="true"
+					></app-input-validate>
+				</label>
+
+				<label [ngClass]="{'popup-hasError':!phoneForm.controls['passwd'].valid && phoneForm.controls['passwd'].touched}" >
+					<span class="popup-label">Введите пароль</span>
+					<input 
+						class="popup-input"
+						type="password"
+						formControlName="passwd"
+					/>
+					<app-input-validate
+						[control]="phoneForm.controls['passwd']"
+						[touched]="true"
+					></app-input-validate>
+				</label>
+
+				<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+
+				<div class="popup-submit">
+					<button type="submit" class="popup-btn" [disabled]="!phoneForm.valid">Подтвердить по SMS</button>
+				</div>
+
+				<div class="popup-info">
+					Обратите внимание, SMS код будет выслан на новый номер телефона
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+
+	<div *ngIf='step==2'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title">Подтвердить по SMS</div>
+
+			<form class="popup-form" [formGroup]="cnfrmForm" (ngSubmit)="confirmNewPhone()">
+				<label [ngClass]="{'popup-hasError':!cnfrmForm.controls['sms_code'].valid && cnfrmForm.controls['sms_code'].touched}" >
+					<span class="popup-label">Введите SMS код</span>
+					<input 
+						class="popup-input"
+						type="text"
+						formControlName="sms_code"
+						(input)="code = $event.target.value"
+					/>
+					<app-input-validate
+						[control]="cnfrmForm.controls['sms_code']"
+						[touched]="true"
+					></app-input-validate>
+				</label>
+
+				<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+
+				<div class="popup-submit">
+					<button type="submit" class="popup-btn" [disabled]="!cnfrmForm.valid">Подтвердить по SMS</button>
+				</div>
+
+				<div class="popup-info">
+					SMS код отправлен на номер {{formatPhone(newPhone)}}. Если SMS код не приходит в течение 5 минут, то запросите
+					<b (click)="sendPhoneCode()"> SMS код повторно</b>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+
+	<div *ngIf='step==3'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title popup-title--sccss">Новый номер {{formatPhone(newPhone)}} успешно сохранён</div>
+
+			<div class="popup-submit">
+				<button class="popup-btn" (click)="closePopup()" >Закрыть</button>
+			</div>
+		</div>
+	</div>
+
+</div>

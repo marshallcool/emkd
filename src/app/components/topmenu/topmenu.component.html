@@ -1,0 +1,26 @@
+<menu class="topmenu">
+  <div class="topmenu-left">
+    <li class="topmenu-item item-mobmenu" [ngClass]="{'is-hide':sidebarIsOpen}" (click)="showSidebar()" >
+      <img src="/assets/images/mob-menu.png"/>
+    </li>
+  </div>
+
+  <div class="topmenu-right">
+    <li class="topmenu-item item-phone is-nothover">
+      <span>{{phone}}</span>
+    </li>
+
+    <li class="topmenu-item item-search" routerLink="/{{urls.search}}">
+      <img src="/assets/images/search.png"/>
+    </li>
+
+    <li class="topmenu-item item-profile" routerLink="/{{urls.profile.index}}">
+      <img src="/assets/images/profile.png"/>
+      <span>Профиль</span>
+    </li>
+
+    <li class="topmenu-item item-logout" (click)="logout()">
+      <span>Выйти</span>
+    </li>
+  </div>
+</menu>

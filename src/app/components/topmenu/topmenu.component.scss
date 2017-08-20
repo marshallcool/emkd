@@ -1,0 +1,77 @@
+@import "../../scss/constants.scss";
+
+.topmenu {
+  position: fixed;
+  z-index: 1000;
+  background: #fff;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid $border-color;
+  font-family: "MyriadProRegular";
+  font-size: 16px;
+  color: #212121;
+  font-weight: 200;
+  user-select: none;
+
+  li {
+    list-style: none;
+  }
+
+  &-left {
+    float: left;
+  }
+  
+  &-right {
+    float: right;
+  }
+
+  &-item {
+    display: inline-block;
+    line-height: $topmenu-height;
+    text-align: center;
+    padding: 0 15px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.is-nothover:hover {
+      background-color: transparent;
+      cursor: default;
+    }
+
+    img {
+      position: relative;
+      top: 4px;
+    }
+  }
+
+  .is-hide {
+    display: none;
+  }
+
+  .item-profile {
+    img {
+      padding-left: 4px;
+    }
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+
+@media (max-width: 460px){
+  .topmenu {
+    .item-profile span,
+    .item-phone {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,57 @@
+@import '../../scss/constants.scss';
+
+.service-page {
+  text-align: center;
+  position: absolute;
+  top: $topmenu-height + 55px;
+  left: $sidebar-width;
+  right: 0;
+  bottom: 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  h2 {
+    font-size: 22px;
+    font-family: "PTSans";
+    color: rgb(96, 154, 236);
+    line-height: 1.2;
+    margin-top: -35px;
+  }
+
+  &--restrict {
+    background-image: url('/assets/images/restrict-page.png');
+  }
+
+  &--develop {
+    background-image: url('/assets/images/under-construction.png');
+  }
+
+  &--404 {
+    background-image: url('/assets/images/404.png');
+  }
+
+  &--500 {
+    background-image: url('/assets/images/500.png');
+  }
+}
+
+
+
+@media (max-width: 760px) {
+  .service-page {
+    left: 0;
+
+    h2 {
+      font-size: 18px;
+    }
+  }
+}
+
+@media (max-width: 460px) {
+  .service-page {
+    h2 {
+      font-size: 16px;
+    }
+  }
+}

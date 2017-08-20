@@ -1,0 +1,19 @@
+.cnfrmEmail {
+	min-height: 100px;
+	font-size: 18px;
+
+	.fa {
+		font-size: 32px;
+		padding-right: 8px;
+		position: relative;
+		top: 4px;
+	}
+
+	&-success .fa {
+		color: #39b939;
+	}
+
+	&-error .fa {
+		color: #f26c4f;
+	}
+}

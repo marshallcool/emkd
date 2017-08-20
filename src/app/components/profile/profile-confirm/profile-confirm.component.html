@@ -1,0 +1,175 @@
+<section class="cntnt">
+	<div class="cntntHdr">
+		<div class="center">
+			<div class="cntntHdr-link">
+				<a routerLink="/{{urls.profile.index}}">Профиль</a>
+				<span> / Подтверждение аккаунта</span>
+			</div>
+			<h2 class="cntntHdr-titleSmall">Подтверждение аккаунта</h2>
+		</div>
+	</div>
+
+	<div class="center">
+		<div class="cntntBlock prflCnfrm" *ngIf="user">
+			<div class="prflCnfrm-block">
+				<h3 class="prflCnfrm-title">Аккаунт {{user.confirmed ? 'подтверждён' : 'не подтверждён'}}</h3>
+
+				<div class="prflCnfrm-data">
+					<p>Текущее ФИО: {{getFullName()}}</p>
+					<p>Текущий телефон: {{getPhone()}}</p>
+				</div>
+
+				<div class="prflCnfrm-activate">
+					<span class="cntnt-btn" (click)="openConfirmPopup(true)" >Ввести код активации из заказного письма</span>
+				</div>
+			</div>
+
+
+			<div class="prflCnfrm-block" *ngIf="logEvents?.length">
+				<h3 class="prflCnfrm-title">История запросов</h3>
+
+				<!-- descktop version -->
+				<table class="cntnt-table prflCnfrm-log" cellspacing="0">
+					<thead>
+						<tr>
+							<th *ngFor="let lghdr of logHeaders">{{lghdr.text}}</th>
+						</tr>
+					</thead>
+
+					<tr *ngFor="let evnt of logEvents">
+						<td *ngFor="let lghdr of logHeaders">{{getEventCell(evnt, lghdr)}}</td>
+					</tr>
+				</table>
+
+				<!-- tablet and mobile version -->
+				<table *ngFor="let evnt of logEvents; let i=index" cellspacing="0" class="cntnt-table prflCnfrm-log cntnt-table--mobile">
+					<thead>
+						<tr>
+							<th colspan="2">Запрос № {{i+1}}</th>
+						</tr>
+					</thead>
+
+					<tr *ngFor="let lghdr of logHeaders; let j=index">
+						<td>{{lghdr.text}}</td>
+						<td>{{getEventCell(evnt, lghdr)}}</td>
+					</tr>
+				</table>
+			</div>
+
+
+			<form #fioFormEl *ngIf="user" class="prflCnfrm-block" [formGroup]="fioForm" (ngSubmit)="toConfirm()">
+				<h3 class="prflCnfrm-title">{{user.confirmed ? 'Изменить ФИО' : 'Подтверждение аккаунта'}}</h3>
+				
+				<p class="prflCnfrm-subtext">(<b> *</b> - обязательные для заполнения поля )<p>
+
+				<p class="prflCnfrm-text">
+					Подтверждение аккаунта - это действие, позволяющее нашей системе привязать ваши ФИО к данному аккаунту.
+					Это требуется для дальнейшего подтверждения права собственности в добавленных вами квартирах, а также в случае потери доступа к аккаунту.
+				</p>
+
+				<div class="prflCnfrm-row">
+					<label [ngClass]="{'prflCnfrm-hasError':!fioForm.controls['last_name'].valid && fioForm.controls['last_name'].touched}">
+						<span class="prflCnfrm-label">Фамилия<b>*</b></span>
+						<input
+							class="prflCnfrm-input" 
+							formControlName="last_name"
+							pattern="[a-zA-Zа-яА-Я-]*"
+							[value]="user.profile.last_name"
+							(keyup.enter)="onInputEnter(first_name)"
+						/>
+						<app-input-validate
+							[control]="fioForm.controls['last_name']"
+							[touched]="true"
+						></app-input-validate>
+					</label>
+				</div>
+
+				<div class="prflCnfrm-row">
+					<label [ngClass]="{'prflCnfrm-hasError':!fioForm.controls['first_name'].valid && fioForm.controls['first_name'].touched}">
+						<span class="prflCnfrm-label">Имя<b>*</b></span>
+						<input #first_name
+							class="prflCnfrm-input" 
+							formControlName="first_name"
+							pattern="[a-zA-Zа-яА-Я-]*"
+							[value]="user.profile.first_name"
+							(keyup.enter)="onInputEnter(middle_name)"
+						/>
+						<app-input-validate
+							[control]="fioForm.controls['first_name']"
+							[touched]="true"
+						></app-input-validate>
+					</label>
+				</div>
+
+				<div class="prflCnfrm-row">
+					<label [ngClass]="{'prflCnfrm-hasError':!fioForm.controls['middle_name'].valid && fioForm.controls['middle_name'].touched}">
+						<span class="prflCnfrm-label">Отчество<b>*</b></span>
+						<input #middle_name
+							class="prflCnfrm-input" 
+							formControlName="middle_name"
+							pattern="[a-zA-Zа-яА-Я-]*"
+							[value]="user.profile.middle_name"
+						/>
+						<app-input-validate
+							[control]="fioForm.controls['middle_name']"
+							[touched]="true"
+						></app-input-validate>
+					</label>
+				</div>
+
+				<div class="prflCnfrm-row row-cnfrmWay">
+					<div class="prflCnfrm-label">Способ подтверждения<b>*</b></div>
+
+					<label>
+						<input class="prflCnfrm-checkbox" 
+							type="radio"
+							name="confirm"
+							value="letter"
+							[checked]="cnfrmWay === 'letter'"
+							(change)="setCnfrmWay('letter')"
+							checked 
+						/>
+						<span>Заказным письмом</span>
+						<p class="prflCnfrm-dscrptn">
+							При выборе данного типа подтверждения вам отправляется заказное письмо, в котором указан код.
+							Это письмо можете получить только вы, предъявив свой паспорт на почте.
+							После получения письма вы вводите указанный в нём код подтверждения.
+						</p>
+					</label>
+
+					<label>
+						<input class="prflCnfrm-checkbox"
+							type="radio"
+							name="confirm"
+							value="payment"
+							[checked]="cnfrmWay === 'payment'"
+							(change)="setCnfrmWay('payment')"
+						/>
+						<span>Через приложение</span>
+						<p class="prflCnfrm-dscrptn">
+							При выборе данного типа подтверждения для вас генерируется ваш персональный код активации.
+							Далее вам необходимо осуществить перевод 10 рублей через мобильное приложение (Сбербанк, Альфабанк) на реквизиты организации ООО "Уютный Сервис" с указанием в комментарии вашего кода активации.
+							После зачисления платежа ваш аккаунт автоматически будет активирован.
+						</p>
+					</label>
+				</div>
+
+				<div class="prflCnfrm-submit">
+					<button 
+						type="submit" 
+						class="cntnt-btn"
+						[ngClass]="{'is-disabled':!fioForm.valid}"
+						(click)='onSubmitClick()'
+					>Далее</button>
+				</div>
+			</form>
+
+
+			<payment-confirm-popup
+				*ngIf="confirmPopupIsOpen"
+				(onClose)="openConfirmPopup(false)"
+			></payment-confirm-popup>
+
+		</div>
+	</div>
+</section>

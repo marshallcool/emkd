@@ -1,0 +1,39 @@
+<section class="cntnt cntrsHstr">
+	<div class="cntntHdr">
+		<div class="center">
+			<div class="cntntHdr-link">
+				<a routerLink="/{{urls.counters.index}}">Показания счётчиков</a>
+				<span> / История</span>
+			</div>
+
+			<h2 class="cntntHdr-text">История показания счётчиков водоснабжения</h2>
+
+			<p class="cntntHdr-subtext">г. Москва, ул. Гарибальди, д.1, к.1</p>
+		</div>
+	</div>
+
+
+	<div class="center">
+		<div class="cntntBlock info">
+			<div class="info-clmn" *ngFor="let param of params">
+				<p class="info-title">{{param.title}}</p>
+				<p class="info-value">{{param.value}}</p>
+			</div>
+		</div>
+
+		<div class="cntntBlock table">
+			<table class="cntnt-table prflCnfrm-log" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Дата</th>
+						<th>01230123 (ХВС КПУ)</th>
+					</tr>
+				</thead>
+
+				<tr *ngFor="let measr of measures">
+					<td>{{measr.date}}</td>
+					<td>{{measr.value}}</td>
+				</tr>
+			</table>
+		</div>
+</div>

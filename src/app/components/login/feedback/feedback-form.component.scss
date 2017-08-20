@@ -1,0 +1,46 @@
+  .form-control-heading {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .form-control {
+    margin-bottom: 15px;
+  }
+
+  .error-message {
+    color: #f26c4f;
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  .form-control.error {
+    input {
+      border-color: #e74c3c;
+    }
+  }
+
+  h2 {
+    font-weight: 200;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  p {
+    text-align: center;
+    width: 70%;
+    margin: auto;
+    font-size: 14px;
+    color: #5e7687;
+    line-height: 16px;
+    margin-bottom: 10px;
+  }
+
+	input,
+	textarea {
+		border: 1px solid;
+	}
+
+  textarea {
+    min-height: 100px;
+  }
+

@@ -1,0 +1,35 @@
+@import "./scss/constants.scss";
+
+.app {
+  height: 100%;
+
+  &-wrapper {
+    height: 100%;
+    background-color: #f4f8fa;
+    position: relative;
+  }
+
+  &-content {
+    padding-top: $topmenu-height;
+    background-color: #f4f8fa;
+    box-sizing: border-box;
+    margin-left: 0;
+    transition: margin-left 0.2s;
+
+    &.is-minified {
+      margin-left: $sidebar-width;
+    }
+  }
+}
+
+
+@media (max-width: $mobile-width) {
+  .app {
+    &-content {
+      &.is-minified {
+        margin-left: 0;
+      }
+    }
+  }
+}
+

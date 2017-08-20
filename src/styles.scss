@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+@import 'app/scss/fonts';
+@import 'app/scss/preloader';
+@import 'app/scss/content';
+@import 'app/scss/popup';
+
+
+html, body {
+  height: 100%;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: normal;
+}
+
+figure {
+  margin: 0;
+}
+
+input, textarea, button,
+input:hover, textarea:hover, button:hover,
+input:focus, textarea:focus, button:focus, {
+  outline: none;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+p {
+  margin: 0;
+}
+
+a, a:visited, a:active, a:hover {
+  color: inherit;
+}

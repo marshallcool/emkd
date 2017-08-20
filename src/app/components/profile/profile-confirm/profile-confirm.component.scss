@@ -1,0 +1,144 @@
+@import "../../../scss/constants.scss";
+
+.prflCnfrm {
+	padding: 25px;
+
+	&-block {
+		position: relative;
+		padding-bottom: 50px;
+
+		&:last-child {
+			padding-bottom: 0;
+		}
+	}
+
+	&-title {
+		font-family: $prflFontBold;
+		font-size: 16px;
+		line-height: 20px;
+		color: #609aec;
+		margin-bottom: 15px !important;
+	}
+
+	&-data {
+		font-size: 14px;
+		line-height: 20px;
+		color: #9da5aa;
+	}
+
+	&-activate {
+		position: absolute;
+		top: 4px;
+		right: 0;
+
+		span {
+			width: 200px;
+		}
+	}
+
+	&-log {
+
+	}
+
+
+	&-row {
+		
+	}
+	.row-cnfrmWay {
+		padding-top: 10px;
+	}
+
+	&-text {
+		font-size: 16px;
+    line-height: 20px;
+	}
+
+	&-label {
+		font-family: $prflFontBold;
+		line-height: 18px;
+		font-size: 14px;
+		display: block;
+    padding-top: 8px;
+    padding-bottom: 12px;
+
+    b {
+			color: #f26c4f;
+			padding-left: 3px;
+    }
+	}
+
+	&-subtext {
+		font-size: 12px;
+		line-height: 14px;
+		position: relative;
+    top: -12px;
+
+		b {
+			color: #f26c4f;
+		}
+	}
+
+	&-hasError {
+		input, textarea {
+			border-color: $prflColorError;
+	    box-shadow: 0 0 3px $prflColorError;
+		}
+	}
+
+	&-input {
+		border: 1px solid #d7d8dc;
+		border-radius: 5px;
+		font-size: 14px;
+		line-height: 30px;
+		width: 270px;
+		padding: 0 10px;
+	}
+
+	&-checkbox {
+		margin: 0 2px 0 0;
+		position: relative;
+    top: 2px;
+	}
+
+	&-dscrptn {
+		color: #9da5aa;
+		font-size: 14px;
+		line-height: 18px;
+		padding-top: 10px;
+		padding-bottom: 20px;
+	}
+
+	&-submit {
+    margin: 10px 0;
+	}
+}
+
+
+@media (max-width: 600px){
+	.prflCnfrm {
+		&-block {
+			padding-bottom: 25px;
+		}
+
+		&-activate {
+	    position: static;
+	    display: block;
+	    padding-top: 15px;
+		}
+	}
+}
+
+
+@media (max-width: 460px) {
+	.prflCnfrm {
+		&-input {
+			width: 100%;
+		}		
+
+		&-dscrptn {
+			font-size: 12px;
+			line-height: 16px;
+		}
+	}
+}
+

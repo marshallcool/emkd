@@ -1,0 +1,21 @@
+<form #feedbackForm="ngForm" (ngSubmit)="sendFeedback(feedbackForm)">
+  <div class="form-control" >
+    <div class="form-control-heading">Ваше имя</div>
+    <input type="text" name="name" ngModel required #name="ngModel">
+    <div class="error-message" *ngIf="name.errors && name.touched">Обязательное поле</div>
+  </div>
+
+  <div class="form-control">
+    <div class="form-control-heading">Ваша почта</div>
+    <input type="email" name="email" ngModel required #email="ngModel">
+    <div class="error-message" *ngIf="email.errors && email.touched">Неверный адрес почты</div>
+  </div>
+
+  <div class="form-control">
+    <div class="form-control-heading">Сообщение</div>
+    <textarea name="message" required ngModel #message="ngModel"></textarea>
+    <div class="error-message" *ngIf="message.errors && message.touched">Обязательное поле</div>
+  </div>
+
+  <button class="g-button" type="submit">Отправить</button>
+</form>

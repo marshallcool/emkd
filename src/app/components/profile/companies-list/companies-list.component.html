@@ -1,0 +1,21 @@
+<section class="blcklist blcklist--second">
+	<div class="cntntBlock blcklist-content">
+		<h3 class="blcklist-title">Компании</h3>
+		
+		<ul class="blcklist-items" *ngIf="companiesList">
+			<li *ngFor="let cmpny of companiesList" class="blcklist-item">
+				<div class="blcklist-addr">{{cmpny.name}}</div>
+				<div class="blcklist-status">Должность:
+					<span>{{cmpny.position}}</span>
+				</div>
+			</li>
+		</ul>
+
+		<div class="blcklist-btn">
+			<a routerLink="/{{urls.estate.add}}" class="cntnt-btn">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+				<span>Добавить компанию</span>
+			</a>
+		</div>
+	</div>
+</section>

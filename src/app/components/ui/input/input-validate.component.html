@@ -1,0 +1,30 @@
+<div 
+	*ngIf="!control.valid && (touched) ? control.touched : true"
+	class="input-error"
+	[ngClass]="(styleModfctr) ? ('input-error--'+styleModfctr) : ''"
+	[ngStyle]="cstmStyle"
+>
+	<span *ngIf="control.hasError('required')">
+		Заполните поле.
+	</span>
+
+	<span *ngIf="control.hasError('minlength')">
+		Не менее {{control.errors.minlength.requiredLength}} символов.
+	</span>	
+
+	<span *ngIf="control.hasError('maxlength')">
+		Максимальная длина не более {{control.errors.maxlength.requiredLength}} символов.
+	</span>
+
+	<span *ngIf="control.hasError('pattern')">
+		Неверный формат.
+	</span>
+
+	<span *ngIf="control.hasError('validatePhone')">
+		Заполните все цифры.
+	</span>
+
+	<span *ngIf="control.hasError('validateEmail')">
+		Неверный формат почты.
+	</span>
+</div>

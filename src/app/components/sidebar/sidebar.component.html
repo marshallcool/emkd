@@ -1,0 +1,37 @@
+<div #sidebar class="sidebar" [ngClass]="{'is-hide': !isOpen}">
+  <div class="sidebar-close" (click)="hide()">
+    <span>&times;</span>
+  </div>
+
+  <div class="sidebar-logo-wrapper">
+    <a routerLink="{{urls.timeline}}">
+      <img class="sidebar-logo" src="/assets/images/logo-white.png"/>
+    </a>
+  </div>
+
+  <div class="sidebar-items">
+    <div *ngFor="let item of menuItems" class="item">
+      <a routerLink="{{item.url}}" (click)="onItemClick()">
+        <img src="/assets/images/{{item.icon}}.png" />
+
+        <span class="title">{{item.title}}</span>
+        
+        <span *ngIf="item.badges" class="badge">{{item.badges}}</span>
+      </a>
+
+      <div *ngIf="item.subPages">
+        <div *ngFor="let sub of item.subPages" class="sub">
+          <a href="{{sub.url}}">{{sub.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <p class="copyright">&copy; 2016 ООО "ЕМКД"</p>
+    <p class="questions">
+      Если у вас остались вопросы по работе системы, 
+      <a href="mailto:foo@bar.com">напишите нам</a>
+    </p>
+  </div>
+</div>

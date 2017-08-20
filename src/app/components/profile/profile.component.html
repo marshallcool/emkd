@@ -1,0 +1,102 @@
+<section class="cntnt" *ngIf="user">
+	<div class="cntntHdr">
+		<div class="center">
+			<h2 class="cntntHdr-left cntntHdr-title">Ваш профиль</h2>
+
+			<div class="cntntHdr-right">
+				<div class="cntntHdr-status" [ngClass]="{'cntntHdr-status--cnfrmd':user.confirmed}">
+					Статус аккаунта: <b>{{user.confirmed ? 'подтверждён' : 'не подтверждён'}}</b>
+				</div>
+				<div class="cntntHdr-confirm">
+					<a routerLink="/{{urls.profile.confirm}}" class="cntnt-btn">Подтвердить аккаунт</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="center">
+		<div class="cntntBlock prflInfo">
+			<div class="prflInfo-avatar">
+				<img src="{{user?.image?.image_140 || '/assets/images/profile_avatar.png'}}" alt="avatar" />
+			</div>
+
+			<div class="prflInfo-edit">
+				<a routerLink="/{{urls.profile.edit}}" class="cntnt-btn">Редактировать</a>
+			</div>
+
+			<div #content class="prflInfo-content">
+				<h3 class="prflInfo-title">Персональные данные</h3>
+
+				<div class="prflInfo-items">
+					<div class="infoItem">
+						<div class="infoItem-name">Телефон</div>
+						<div class="infoItem-value">{{getPhone()}}</div>
+					</div>
+
+					<div class="infoItem">
+						<div class="infoItem-name">ФИО</div>
+						<div class="infoItem-value">{{getFullName()}}</div>
+					</div>
+
+					<div class="infoItem">
+						<div class="infoItem-name">Пол</div>
+						<div class="infoItem-value">{{user?.profile.gender == 'male' ? "Мужской" : "Женский"}}</div>
+					</div>
+
+					<div class="infoItem">
+						<div class="infoItem-name">СНИЛС</div>
+						<div class="infoItem-value">{{user?.profile.snils || 'не указан'}}</div>
+					</div>
+
+					<div class="infoItem">
+						<div class="infoItem-name">E-mail</div>
+						<div class="infoItem-value">{{user?.profile.email || 'не указан'}}</div>
+					</div>
+
+					<div class="infoItem">
+						<div class="infoItem-name">Пароль</div>
+						<div class="infoItem-value">***********</div>
+					</div>
+
+					<h3 class="prflInfo-title prflInfo-title--passport">Паспортные данные</h3>
+
+					<div class="prflInfo-empty" *ngIf="!psprtBlockIsShown">
+						Для заполнения паспортных данных нажмите на "Редактировать"
+					</div>
+
+					<div class="prflInfo-items infoItems" *ngIf="psprtBlockIsShown">
+						<div class="infoItem">
+							<div class="infoItem-name">Серия и номер</div>
+							<div class="infoItem-value">{{user?.passport?.series || 'не указан'}} {{user?.passport?.number}}</div>
+						</div>
+
+						<div class="infoItem">
+							<div class="infoItem-name">Дата выдачи</div>
+							<div class="infoItem-value">{{user?.passport?.issued_date || 'не указан'}}</div>
+						</div>
+
+						<div class="infoItem">
+							<div class="infoItem-name">Выдан</div>
+							<div class="infoItem-value">{{user?.passport?.issued || 'не указан'}}</div>
+						</div>
+					</div>
+
+					<div class="prflInfo-expand">
+						<span class="prflInfo-link" (click)="profileToggle()">
+							{{profileExpanded ? 'Скрыть' : 'Все данные'}}
+						</span>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<app-estate-list></app-estate-list>
+		<app-companies-list></app-companies-list>
+
+	</div>
+
+
+</section>

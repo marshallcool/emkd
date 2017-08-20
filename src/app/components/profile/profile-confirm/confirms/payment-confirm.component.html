@@ -1,0 +1,54 @@
+<section class="cntnt">
+	<div class="cntntHdr">
+		<div class="center">
+			<div class="cntntHdr-link">
+				<a routerLink="/{{urls.profile.index}}">Профиль</a>
+				<a routerLink="/{{urls.profile.confirm}}"> / Подтверждение аккаунта</a>
+				<span> / Приложение</span>
+			</div>
+			<h2 class="cntntHdr-titleSmall">Подтверждение аккаунта через приложение</h2>
+		</div>
+	</div>
+
+	<div class="center">
+		<div *ngIf="loading" class="cntnt-preloader">
+			<img src="/assets/images/preloader.gif" alt="preloader"/>
+		</div>
+
+		<div *ngIf="!loading" class="cntntBlock prflPaymnt">
+			<p *ngIf="payCode" class="popup-title">Ваш платёжный идентификатор: <b>{{payCode}}</b><br></p>
+
+			<p class="popup-headText">
+				При выборе данного типа подтверждения для вас генерируется ваш персональный код активации. Далее вам необходимо осуществить перевод 10 рублей через мобильное приложение (Сбербанк, Альфабанк) на реквизиты организации ООО "Уютный Сервис" с указанием в комментарии вашего кода активации.
+
+				Обратите внимание, что <b>вы должны совершать оплату со своего счета.</b> ФИО, полученные из реквизитов оплаты будут сравниваться с данными, указанными в вашем аккаунте.
+
+				Оплату можно производить <b>только через мобильное приложение.</b>
+				После того, как ваш платеж будет зачислен мы сверим ФИО плательщика с ФИО, указанными в аккаунте и ваш аккаунт будет активирован.
+				
+				Реквизиты для оплаты:
+				Название организации	ООО “Уютный Сервис”
+				ИНН 7717789790
+				КПП 771701001
+				ОГРН 1147746831880
+				ОКПО 33666010
+				БАНК ОАО «Сбербанк России» г.Москва
+				Р/с № 40702810538000004724
+				К/с № 30101810400000000225
+				БИК 044525225
+			</p>
+
+			<div class="popup-submit">
+				<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+				<button *ngIf="!payCode" type="submit" class="popup-btn" (click)="generatePayCode()">Запросить идентификатор для оплаты</button>
+				<button *ngIf="payCode" type="submit" class="popup-btn" (click)="openRenewCodePopup(true)">Изменить идентификатор для оплаты</button>
+			</div>
+
+			<app-popup-renew-paycode 
+				*ngIf="isOpenRenewPopup"
+				(onClose)="openRenewCodePopup(false)"
+			></app-popup-renew-paycode>
+
+		</div>
+	</div>
+</section>

@@ -1,0 +1,14 @@
+@import "../../../scss/constants.scss";
+
+.input-error {
+	padding: 0;
+	color: $prflColorError;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 18px;
+
+	&--profileEdit {
+		width: 70%;
+    margin-left: 20%;
+	}
+}

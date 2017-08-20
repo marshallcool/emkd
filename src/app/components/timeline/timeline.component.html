@@ -1,0 +1,135 @@
+<div class="timeline-wrapper">
+  <div>
+    <div class="system-message" *ngIf="sysMsgShown">
+      <div class="container-fluid">
+        <h2>Здравствуйте!</h2>
+        <div class="text">
+          Что бы начать пользоваться системой, добавьте свою квартиру
+        </div>
+        <div class="buttons">
+          <button class="btn btn-default" routerLink="/{{urls.estate.add}}">Добавить</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-header">
+      <div class="container-fluid">
+        <table id="filter-table">
+          <tr>
+            <td>
+              <div class="timeline-header">Летопись событий</div>
+              <small class="tl-sub-header">{{filterString}}</small>
+              <div class="mobile-only">
+                <button class="btn btn-default" (click)="markAllAsReaded()">Отметить все прочитанными</button>
+                <button class="btn btn-default pull-right" (click)="filterShowed = true"><i class="fa fa-chevron-left" aria-hidden="true"></i> Фильтр</button>
+              </div>
+            </td>
+            <td id="table-buttons" class="desktop-only">
+              <button class="btn btn-default" (click)="markAllAsReaded()">Отметить все прочитанными</button>
+              <button class="btn btn-default" (click)="filterShowed = !filterShowed"><i *ngIf="!filterShowed"
+                                                                                        class="fa fa-chevron-left"
+                                                                                        aria-hidden="true"></i> Фильтр <i
+                *ngIf="filterShowed" class="fa fa-chevron-right" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="events?.length == 0" class="text-center text-muted">
+      <i>Нет событий</i>
+    </div>
+    <div infinite-scroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="900" (scrolled)="onScrollDown()">
+      <ul class="timeline" *ngIf="events?.length > 0" [ngClass]="{'filterShowed': filterShowed}">
+        <li *ngFor="let event of events; let i = index;" [ngClass]="{'timeline-inverted': (i % 2 == 1)}">
+          <div class="timeline-badge" [ngClass]="{'unreaded': event.status == false, 'badge-inverted': (i % 2 == 1)}">
+            <img src="/assets/images/list-active.png" *ngIf="event.status == false && event.creator">
+            <img src="/assets/images/list-disabled.png" *ngIf="event.status == true && event.creator">
+            <img src="/assets/images/sysmsg_active.png" *ngIf="event.status == false && !event.creator">
+            <img src="/assets/images/sysmsg_disabled.png" *ngIf="event.status == true && !event.creator">
+          </div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">{{event.title}}
+                <small class="timeline-date pull-right"><i class="fa fa-calendar" aria-hidden="true"></i>
+                {{event.date}}
+              </small>
+              </h4>
+            </div>
+            <div class="timeline-body">
+              <p class="">{{event.description}}</p>
+            </div>
+            <div class="timeline-bottom">
+              <span class="panel-author">{{event.module}}</span><span class="pull-right" *ngIf="href"><a
+            href="{{href}}" class="timeline-podrob">Подробнее</a> </span>
+            </div>
+          </div>
+        </li>
+
+
+      </ul>
+    </div>
+
+  </div>
+
+  <div id="timeline-filter" *ngIf="filterShowed" [ngClass]="{'sysMsgShown': sysMsgShown}">
+    <button class="btn btn-default mobile-only filter-btn pull-right" (click)="filterShowed = false">Фильтр <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+
+    <!--<label id="only-non-readed"><input type="checkbox" (change)="onFilter()" [(ngModel)]="filter.OnlyReaded"/> Только
+      непрочитаные </label>-->
+    <!--<div class="select-wrapper" (click)="newFilter()" [ngClass]="{'active': loadMsg}">
+      <div class="select-arrow-3"></div>
+      <div class="select-arrow-3"></div>
+      <select [(ngModel)]="selectedDeviceObj" (ngModelChange)="onChangeObj($event)">
+        <option >Непрочитанные</option>
+        <option >Прочитанные</option>
+      </select>
+    </div>-->
+
+    <!--<p-dropdown [options]="filters" placeholder="Select a Brand" [style]="{'width':'234px'}">
+      <template let-f pTemplate="item">
+        <div class="ui-helper-clearfix">
+          <label class="item"><input type="checkbox" (change)="filterType(f)"> {{f.name}}</label>
+        </div>
+      </template>
+    </p-dropdown>-->
+
+    <div class="select-wrapper" [ngClass]="{'select-wrapper--active': loadMsg}">
+      <div class="select-arrow-3" [ngClass]="{'select-arrow-3--active': loadMsg}"></div>
+      <div class="select-arrow-3" [ngClass]="{'select-arrow-3--active': loadMsg}"></div>
+      <a (click)="newFilter()" class="select-wrapper__link" [ngClass]="{'select-wrapper__link--active': loadMsg}">{{selectedDeviceObj}}</a>
+      <ul class="select-wrapper__list" *ngIf="loadMsg">
+        <a (click)="onChangeObj($event)" *ngIf="selectedDeviceObj == 'Непрочитанные'" class="select-wrapper__item">{{selectYes}}</a>
+        <a (click)="onChangeObj($event)" *ngIf="selectedDeviceObj == 'Прочитанные'" class="select-wrapper__item">{{selectNo}}</a>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="header">По дате</div>
+      <form class="form-inline">
+        <label for="flt-from" class="form-label">с: </label>
+        <div class="form-group">
+          <input type="date" id="flt-from" name="rg-from" value="" class="form-control" [(ngModel)]="filter.From" (change)="onFilter()">
+        </div>
+        <br/>
+        <label for="flt-to" class="form-label">по: </label>
+        <div class="form-group">
+          <input type="date" id="flt-to" name="rg-to" value="" class="form-control" [(ngModel)]="filter.To" (change)="onFilter()">
+        </div>
+      </form>
+    </div>
+
+    <div class="block" style="height: 200px;">
+      <div class="header">Адрес</div>
+      <div class="estate-list">
+        <div *ngFor="let est of estates"> <label class="item"><input type="checkbox" (change)="filterHouse(est)"> {{est.house?.address}}, {{ est.type.abbreviation }} {{ est.number }}</label>          </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="header">Тип события</div>
+      <div class="toggle-buttons">
+        <div *ngFor="let f of filters"> <label class="item"><input type="checkbox" (change)="filterType(f)"> {{f.name}}</label> </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,254 @@
+<section class="cntnt">
+	<div class="cntntHdr">
+		<div class="center">
+			<div class="cntntHdr-link">
+				<a routerLink="/{{urls.profile.index}}">Профиль</a>
+				<span> / Редактирование</span>
+			</div>
+			<h2 class="cntntHdr-titleSmall">Редактирование профиля</h2>
+		</div>
+	</div>
+
+	<div class="center">
+		<div *ngIf="user" class="cntntBlock prflEdit">
+			<figure class="prflEdit-avatar" (click)="openAvatarEditPopup(true)" >
+				<img src="{{ user?.image?.image_140 || '/assets/images/profile_avatar.png'}}" alt="avatar" />
+			</figure>
+
+			<div *ngIf="loading" class="cntnt-preloader">
+				<img src="/assets/images/preloader.gif" alt="preloader"/>
+			</div>
+
+			<form class="prflEdit-form" [formGroup]="editForm" (ngSubmit)="onEditSubmit()">
+				<div class="prflEdit-block">
+					<h3 class="prflEdit-title">Персональные данные</h3>
+
+					<div class="prflEdit-clmn">
+						<div class="prflEdit-row">
+							<label [ngClass]="{'prflEdit-hasError':!editForm.controls['last_name'].valid}">
+								<span class="prflEdit-label">Фамилия:</span>
+								<input 
+									class="prflEdit-input"
+									type="text"
+									formControlName="last_name"
+									pattern="[a-zA-Zа-яА-Я-]*"
+									[(ngModel)]="user.profile.last_name"
+								/>
+								<app-input-validate 
+									[control]="editForm.controls['last_name']" 
+									styleModfctr="profileEdit"
+								></app-input-validate>
+							</label>
+						</div>
+
+						<div class="prflEdit-row">
+							<label [ngClass]="{'prflEdit-hasError':!editForm.controls['first_name'].valid}">
+								<span class="prflEdit-label">Имя:</span>
+								<input
+									class="prflEdit-input"
+									type="text"
+									formControlName="first_name"
+									pattern="[a-zA-Zа-яА-Я-]*"
+									[(ngModel)]="user.profile.first_name"
+								/>
+								<app-input-validate 
+									[control]="editForm.controls['first_name']" 
+									styleModfctr="profileEdit"
+								></app-input-validate>
+							</label>
+						</div>
+
+						<div class="prflEdit-row">
+							<label [ngClass]="{'prflEdit-hasError':!editForm.controls['middle_name'].valid}">
+								<span class="prflEdit-label">Отчество:</span>
+								<input
+									class="prflEdit-input"
+									type="text"
+									formControlName="middle_name"
+									pattern="[a-zA-Zа-яА-Я-]*"
+									[(ngModel)]="user.profile.middle_name"
+								/>
+								<app-input-validate 
+									[control]="editForm.controls['middle_name']"
+									styleModfctr="profileEdit"
+								></app-input-validate>
+							</label>
+						</div>
+
+						<div class="prflEdit-row">
+							<label>
+								<span class="prflEdit-label">Пол:</span>
+								<div class="prflEdit-drpdwn">
+									<app-dropdown
+										[values]="genderValues"
+										[value]="user.profile.gender"
+										(genderUpdated)="handleGenderUpdated($event)"
+									></app-dropdown>
+								</div>
+							</label>
+						</div>
+					</div>
+
+					<div class="prflEdit-clmn">
+						<div class="prflEdit-row">
+							<label>
+								<span class="prflEdit-label">Телефон:</span>
+								<input
+									class="prflEdit-input"
+									type="text"
+									formControlName="phone"
+									[value]="getPhone()"
+									[placeholder]="cnst.PHONE_PLCHLDR"
+									(click)="openPhoneEditPopup(true)"
+									readonly
+								/>
+							</label>
+						</div>
+
+						<div class="prflEdit-row">
+							<label>
+								<span class="prflEdit-label">Email:</span>
+								<input
+									class="prflEdit-input"
+									type="text"
+									formControlName="email"
+									[value]="user.profile.email"
+									[placeholder]="cnst.EMAIL_PLCHLDR"
+									(click)="openEmailEditPopup(true)"
+									readonly
+								/>
+							</label>
+						</div>
+
+						<div class="prflEdit-row">
+							<label>
+								<span class="prflEdit-label">Пароль:</span>
+								<input
+									class="prflEdit-input"
+									type="text"
+									value="***********"
+									(click)="openPswrdEditPopup(true)"
+									readonly
+								/>
+							</label>
+						</div>
+
+						<div class="prflEdit-row">
+							<label [ngClass]="{'prflEdit-hasError':!editForm.controls['snils'].valid && editForm.controls['snils'].touched}">
+								<span class="prflEdit-label">СНИЛС:</span>
+								<input 
+									class="prflEdit-input"
+									type="text"
+									formControlName="snils"
+									[(ngModel)]="user.profile.snils"
+									[textMask]="{mask: mask.snils}"
+									placeholder="___-___-___ __"
+								/>
+								<app-input-validate 
+									[control]="editForm.controls['snils']"
+									styleModfctr="profileEdit"
+									[touched]="true"
+								></app-input-validate>
+							</label>
+						</div>
+					</div>
+				</div>
+				
+
+				<div class="prflEdit-block">
+					<h3 class="prflEdit-title prflEdit-title--passport">Паспортные данные</h3>
+
+					<div class="prflEdit-clmn">
+						<div class="prflEdit-row prflEdit-row--passport">
+							<label [ngClass]="{'prflEdit-hasError':!editForm.controls['passport_series'].valid && editForm.controls['passport_series'].touched}">
+								<span class="prflEdit-label">Серия:</span>
+								<input
+									class="prflEdit-input"
+									type="text"
+									formControlName="passport_series"
+									[(ngModel)]="user.passport.series"
+									[textMask]="{mask: mask.passport_series}"
+									placeholder="__ __"
+								/>
+
+								<span class="prflEdit-label">Номер:</span>
+								<input 
+									class="prflEdit-input"
+									type="text"
+									formControlName="passport_number"
+									[(ngModel)]="user.passport.number"
+									[textMask]="{mask: mask.passport_number}"
+									placeholder="______"
+								/>
+								<app-input-validate 
+									[control]="editForm.controls['passport_number']"
+									styleModfctr="profileEdit"
+									[touched]="true"
+								></app-input-validate>
+							</label>
+						</div>
+
+						<div class="prflEdit-row">
+							<label [ngClass]="{'prflEdit-hasError':!editForm.controls['passport_issue_date'].valid && editForm.controls['passport_issue_date'].touched}">
+								<span class="prflEdit-label">Дата выдачи:</span>
+								<input 
+									class="prflEdit-input"
+									type="text"
+									formControlName="passport_issue_date"
+									[(ngModel)]="user.passport.issue_date"
+									[textMask]="{mask: mask.passport_issue_date}"
+									placeholder="__.__.____"
+								/>
+							</label>
+						</div>
+					</div>
+
+					<div class="prflEdit-clmn">
+						<div class="prflEdit-row prflEdit-row--textarea">
+							<label [ngClass]="{'prflEdit-hasError':!editForm.controls['passport_issued'].valid}">
+								<span class="prflEdit-label">Кем выдан:</span>
+								<textarea
+									class="prflEdit-textarea"
+									class="prflEdit-input"
+									formControlName="passport_issued"
+									pattern="[a-zA-Zа-яА-Я-,.\d ]*"
+									[(ngModel)]="user.passport.issued"
+								></textarea>
+								<app-input-validate 
+									[control]="editForm.controls['passport_issued']"
+									styleModfctr="profileEdit"
+								></app-input-validate>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="prflEdit-sbmtError" *ngIf="error">{{error}}</div>
+
+				<div class="prflEdit-submit">
+					<button type="submit" class="cntnt-btn" [disabled]="!editForm.valid">Сохранить</button>
+				</div>
+			</form>
+		</div>
+
+		<app-phone-edit-popup
+			*ngIf="phoneEditPopupIsOpen"
+			(onClose)="openPhoneEditPopup(false)"
+		></app-phone-edit-popup>
+
+		<app-email-edit-popup
+			*ngIf="emailEditPopupIsOpen"
+			(onClose)="openEmailEditPopup(false)"
+		></app-email-edit-popup>
+
+		<app-pswrd-edit-popup
+			*ngIf="pswrdEditPopupIsOpen"
+			(onClose)="openPswrdEditPopup(false)"
+		></app-pswrd-edit-popup>
+
+		<app-avatar-edit-popup
+			*ngIf="avatarEditPopupIsOpen"
+			(onClose)="openAvatarEditPopup(false)"
+		></app-avatar-edit-popup>
+	</div>
+</section>

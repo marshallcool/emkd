@@ -1,0 +1,95 @@
+<section class="cntnt pmnts">
+	<div class="cntntHdr">
+		<div class="center" [ngSwitch]="step">
+
+			<div *ngSwitchCase='1'>
+				<h2 class="cntntHdr-left cntntHdr-title">Выберите объект недвижимости</h2>
+
+				<div class="cntntHdr-right">
+					<div *ngSwitchCase="1" class="cntntHdr-confirm">
+						<a routerLink="/{{urls.estate.add}}" class="cntnt-btn">Добавить объект</a>
+					</div>
+				</div>
+			</div>
+
+
+			<div *ngSwitchCase='2'>
+				<div class="cntntHdr-left">
+					<h2 class="cntntHdr-text">Персональный баланс лицевого счёта 010203040506</h2>
+					<p class="cntntHdr-subtext">Баланс на 1 октября -3700.3 руб</p>
+				</div>
+
+				<div class="cntntHdr-right" [ngSwitch]="step">
+					<div class="cntntHdr-confirm">
+						<a (click)="step=1" class="cntnt-btn">Выбрать другой объект</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="center" [ngSwitch]="step">
+
+		<div *ngSwitchCase="1" class="cntntBlock estates">
+			<ul class="estates-items">
+				<li *ngFor="let estate of estates; let i = index" class="estate" (click)="step=2;actvEstate=estate;">
+					<b class="estate-title">Квартира {{i+1}}</b>
+					<p class="estate-addr">{{estate}}</p>
+				</li>
+			</ul>
+		</div>
+
+
+		<div *ngSwitchCase="2">
+			<div class="cntntBlock">
+				<table class="cntnt-table" cellspacing="0">
+					<thead>
+						<tr>
+							<th *ngFor="let hdr of tblHdrs">{{hdr.text}}</th>
+						</tr>
+					</thead>
+
+					<tr *ngFor="let data of getTblData(showAllData)">
+						<td *ngFor="let hdr of tblHdrs">{{getTblCell(data, hdr)}}</td>
+					</tr>
+				</table>
+
+				<div class="table-subText">
+					<div class="left">
+						<button class="cntnt-btn" (click)="showAllData=!showAllData">
+							<span *ngIf="!showAllData">Показать всю историю</span>
+							<span *ngIf="showAllData">Скрыть всю историю</span>
+						</button>
+					</div>
+					<p class="right sum">Итого: -7123.12</p>
+				</div>
+
+				<p class="popup-info">
+					Уважамые жители! Обращаем ваше внимание, что некоторые виды платежей зачисляются с задержкой до 2-ух банковских дней.
+				</p>
+			</div>
+
+
+			<div class="cntntBlock" *ngIf="!showAllData">
+				<form>
+					<label>
+						<span class="popup-label">Введите сумму необходимую к оплате</span>
+						<input class="popup-input" name="sum"/>
+					</label>
+					
+					<div class="popup-submit">
+						<button class="popup-btn">Далее</button>
+					</div>
+				</form>
+
+				<p class="popup-info">
+					Оплаченная вами сумма поступит на ваш Лицевой счёт 010203040506.
+					Комиссия при оплате 0%. Лимит отдельного платежа по сумме: 50 000 руб.
+				</p>
+			</div>
+		</div>
+
+	</div>
+</section>

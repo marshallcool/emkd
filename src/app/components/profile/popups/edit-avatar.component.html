@@ -1,0 +1,73 @@
+<div class="popup">
+	<div *ngIf='step==1'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title">Изменить фотографию</div>
+		
+			<div class="popup-info">
+				Для загразки разрешаются следующие форматы: jpeg, jpg, png.<br/>
+				Минимальный размер: 140x140 px.<br/>
+				Максимальный размер файла: {{imageMaxSize}}Mb.
+			</div>
+
+			<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+
+			<label class="popup-submit">
+				<input style="display:none;" type="file" (change)="onChange($event)" multiple="false" />
+				<div class="popup-btn">Загрузить</div>
+			</label>
+		</div>
+	</div>
+
+	<div [ngClass]="{'is-visible':(step==2), 'is-hidden':(step!=2)}">
+		<div #popupCropper class="popup-content popup-content--cropper">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title">Обрезать фотографию</div>
+		
+			<div class="popup-info">
+				Для обрезки фотографии выберите нужную область.<br/>
+				Снизу под фотографией отображается сохраняемое изображение.
+			</div>
+
+			<div class="popup-cropperMain">
+				<img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+			</div>
+
+			<div class="popup-cropperSub" *ngIf="data.image" >
+				<img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+			</div>
+
+			<div class="popup-submit">
+				<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+				<button class="popup-btn popup-btn--cancel" (click)="onCancel()">Отменить</button>
+				<button class="popup-btn" (click)="onSave()">Сохранить</button>
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf='step==3'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title popup-title--sccss">Фотография успешно сохранена</div>
+
+			<div class="popup-submit">
+				<button class="popup-btn" (click)="closePopup()" >Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>

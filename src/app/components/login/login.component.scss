@@ -1,0 +1,38 @@
+input[type='email'],
+input[type='text'], 
+input[type='tel'],
+input[type='password'], 
+textarea {
+  padding:8px;
+  border:2px solid #a1bac3;
+
+  &:focus{
+    border:2px solid #a1bac3;
+  }
+}
+
+.form-control {
+	::-webkit-input-placeholder {color:#bbb;}
+	::-moz-placeholder          {color:#bbb;}/* Firefox 19+ */
+	:-moz-placeholder           {color:#bbb;}/* Firefox 18- */
+	:-ms-input-placeholder      {color:#bbb;}
+
+	.phone-plchldr {
+		position: absolute;
+    padding-top: 8px;
+    padding-left: 10px;
+    letter-spacing: 3.5px;
+    font-size: 18px;
+    color: #bbb;
+
+    em {
+	    font-style: normal;
+	    position: relative;
+	    left: 35px;
+    }
+	}
+
+	input[name="phone"] {
+		padding-left: 42px;
+	}
+}

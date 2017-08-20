@@ -1,0 +1,23 @@
+<section class="blcklist">
+	<div class="cntntBlock blcklist-content">
+		<h3 class="blcklist-title">Недвижимость</h3>
+		
+		<ul class="blcklist-items" *ngIf="estateList">
+			<li *ngFor="let estate of estateList" class="blcklist-item">
+				<div class="blcklist-addr">
+					{{estate?.house?.address}}, {{estate?.type?.abbreviation}} {{estate?.number}}
+				</div>
+				<div class="blcklist-status">Статус:
+					<span>{{estate?.status ? 'подтверждён' : 'не подтверждён'}}</span>
+				</div>
+			</li>
+		</ul>
+
+		<div class="blcklist-btn">
+			<a routerLink="/{{urls.estate.add}}" class="cntnt-btn">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+				<span>Добавить недвижимость</span>
+			</a>
+		</div>
+	</div>
+</section>

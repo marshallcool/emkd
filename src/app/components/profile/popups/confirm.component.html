@@ -1,0 +1,53 @@
+<div class="popup">
+	<div *ngIf='step==1'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title">Ввод кода активации</div>
+
+			<form class="popup-form" [formGroup]="form" (ngSubmit)="sendCode()">
+				<label [ngClass]="{'popup-hasError':!form.controls['code'].valid && form.controls['code'].touched}" >
+					<span class="popup-label">Код активации из заказного письма</span>
+					<input 
+						class="popup-input"
+						type="text"
+						formControlName="code"
+						pattern="^\w+$"
+					/>
+					<app-input-validate
+						[control]="form.controls['code']"
+						[touched]="true"
+					></app-input-validate>
+				</label>
+
+				<div class="popup-submit">
+					<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+					<button type="submit" class="popup-btn" [disabled]="!form.valid || error">Активировать</button>
+				</div>
+
+				<div class="popup-info"></div>
+			</form>
+
+		</div>
+	</div>
+
+	<div *ngIf='step==2'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title popup-title--sccss">Аккаунт успешно подтверждён</div>
+
+			<div class="popup-submit">
+				<button class="popup-btn" (click)="closePopup()">Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,10 @@
+<div class="app">
+	<app-topmenu></app-topmenu>
+	<app-sidebar></app-sidebar>
+
+	<div class="app-wrapper">
+		<div class="app-content" [ngClass]="{'is-minified': sidebarIsOpen}" >
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>

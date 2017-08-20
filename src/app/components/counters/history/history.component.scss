@@ -1,0 +1,31 @@
+.cntrsHstr {
+	.cntntHdr-text {
+		padding-top: 0;
+	}
+
+	.cntntHdr-subtext {
+		padding-bottom: 8px;
+	}
+
+	.info {
+		line-height: 22px;
+
+		&-clmn {
+			display: inline-block;
+			margin-left: -4px;
+			margin-right: 30px;
+
+			&:first-child {
+				margin-left: 0px;
+			}
+		}
+
+		&-title {
+			font-weight: bold;
+		}
+
+		&-value {
+
+		}
+	}
+}

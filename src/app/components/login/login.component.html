@@ -1,0 +1,402 @@
+<div class="c-page-index">
+
+  <div class="g-container">
+    <div class="logo"></div>
+    <div class="page-index-content">
+      <h1>Электронный МКД</h1>
+      <div class="sub-heading">Решение коммунальных<span class="mobile-br"><br></span> проблем онлайн</div>
+      <div class="form login" #loginFormEl>
+        <div *ngIf="pageMode == 0" id="login-animated" class="c-form-login">
+          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+            <div class="form-heading">Войти или <a (click)="changePage(1)">зарегистрироваться</a></div>
+            <div class="form-control">
+              <div class="form-control-heading">Ваш номер телефона</div>
+              <label><span class="phone-plchldr">+7(<em>)</em></span>
+              <input type="text" name="phone" placeholder="___ ___-__-__" formControlName="phone"
+                     [textMask]="{mask: mask, guide: false}" (keypress)="onPhoneClick($event)"></label>
+              <div class="error-message" *ngIf="loginForm.controls.phone.errors&& loginForm.controls.phone.touched">
+                Введите корректный номер телефона
+              </div>
+            </div>
+            <div class="form-control">
+              <div class="form-control-heading">Пароль</div>
+              <input type="password" name="password" formControlName="password">
+              <div class="error-message"
+                   *ngIf="loginForm.controls.password.errors && loginForm.controls.password.touched">Пароль должен быть
+                не менее 6ти символов
+              </div>
+            </div>
+            <div class="form-control" *ngIf="isCaptchaIsNeeded">
+              <re-captcha (captchaResponse)="loginCaptchaCallback($event)"
+                          site_key="6LcgMwcUAAAAAOiJvR932UVLDZ3E6GdH50Ukn9C0"></re-captcha>
+              <div class="error-message"></div>
+            </div>
+            <div class="bottom"><a (click)="changePage(3)" class="g-link password-restore">Не помню пароль</a>
+              <label class="checkbox-label remember-label">
+                <input type="checkbox" formControlName="remember" class="checkbox-input"><span class="checkbox">
+                    <div class="g-icon g-icon-check"></div></span><span class="text">Запомнить меня</span>
+              </label>
+            </div>
+            <div class="form-error error-message"></div>
+            <button type="submit" class="g-button" [disabled]="!canLogin()">Войти</button>
+          </form>
+        </div>
+        <div *ngIf="pageMode == 1" class="c-form-register">
+          <form [formGroup]="regForm" (ngSubmit)="onRegSubmit()">
+            <div class="form-heading"><a (click)="changePage(0)">Войти</a> или зарегистрироваться</div>
+            <div class="form-control">
+              <div class="form-control-heading">Ваш номер телефона</div>
+              <label><span class="phone-plchldr">+7(<em>)</em></span>
+              <input type="text" name="phone" placeholder="___ ___-__-__" formControlName="phone"
+                     [textMask]="{mask: mask, guide: false}" (keypress)="onPhoneClick($event)"></label>
+              <div class="error-message" *ngIf="regForm.controls.phone.errors&& regForm.controls.phone.touched">Введите
+                корректный номер телефона
+              </div>
+              <div class="notice">На телефон будет выслано смс с кодом подтверждения</div>
+            </div>
+
+
+            <div class="form-control">
+              <div class="form-control-heading">Пароль</div>
+              <input type="password" name="password" formControlName="password">
+              <div class="error-message" *ngIf="regForm.controls.password.errors&& regForm.controls.password.touched">
+                Пароль должен быть не менее 6ти символов
+              </div>
+            </div>
+
+            <div class="form-control">
+              <div class="form-control-heading">Пароль еще раз</div>
+              <input type="password" name="password-repeat" formControlName="repeatPassword">
+              <div class="error-message"
+                   *ngIf="regForm.controls.password.value != regForm.controls.repeatPassword.value">Пароли должны
+                совпадать
+              </div>
+            </div>
+
+            <div class="form-control">
+              <div class="form-control-heading">Пол</div>
+              <label class="radio-label">
+                <input formControlName="gender" type="radio" name="gender" value="male" checked
+                       class="radio-input"><span
+                class="radio"></span><span class="text">мужской</span>
+              </label>
+              <label class="radio-label">
+                <input formControlName="gender" type="radio" name="gender" value="female" class="radio-input"><span
+                class="radio"></span><span
+                class="text">женский</span>
+              </label>
+            </div>
+            <div class="form-control">
+              <re-captcha (captchaResponse)="regCaptchaCallback($event)"
+                          site_key="6LcgMwcUAAAAAOiJvR932UVLDZ3E6GdH50Ukn9C0"></re-captcha>
+            </div>
+            <div class="form-control bottom">
+              <label class="checkbox-label">
+                <input type="checkbox" name="agreement" formControlName="accept" class="checkbox-input"><span
+                class="checkbox">
+                    <div class="g-icon g-icon-check"></div></span><span class="text">Я согласен с <a (click)="showSubPage('rules')">правилами сервиса</a></span>
+              </label>
+              <div class="error-message"></div>
+            </div>
+            <button type="submit" class="g-button"
+                    [disabled]="!regForm.controls.accept.value || !regForm.valid || !regCaptchaToken">Далее
+            </button>
+          </form>
+        </div>
+        <div *ngIf="pageMode == 2" class="c-form-register-confirmation">
+          <form>
+            <div class="form-heading"><a (click)="changePage(0)">Войти</a> или <a (click)="changePage(1)">зарегистрироваться</a>
+            </div>
+            <div class="form-control">
+              <div class="form-control-heading">Код</div>
+              <input type="text" name="code" [(ngModel)]="regSms">
+              <div class="error-message"></div>
+              <a class="g-link request-code" (click)="repeatCode()">Отправить код повторно</a>
+            </div>
+            <button type="submit" class="g-button" (click)="confirmRegister()" [disabled]="!regSms">Зарегистрироваться
+            </button>
+          </form>
+        </div>
+        <div *ngIf="pageMode == 3" class="c-form-password-restore">
+
+          <div class="form-heading"><a (click)="changePage(0)">Войти</a> или <a (click)="changePage(1)">зарегистрироваться</a>
+          </div>
+          <div class="form-control">
+            <div class="form-control-heading">Ваш номер телефона</div>
+            <label><span class="phone-plchldr">+7(<em>)</em></span>
+            <input type="text" name="phone" placeholder="___ ___-__-__" [textMask]="{mask: mask, guide: false}" (keypress)="onPhoneClick($event)"
+                   [(ngModel)]="forgotPhone" [disabled]="forgotCodeSent"></label>
+            <div class="error-message" *ngIf="forgotPhone.length < 12 && forgotPhone.length > 0">Введите корректный
+              номер телефона
+            </div>
+            <div class="form-control " style="margin-top: 10px">
+              <re-captcha (captchaResponse)="forgotCaptchaCallback($event)"
+                          site_key="6LcgMwcUAAAAAOiJvR932UVLDZ3E6GdH50Ukn9C0"></re-captcha>
+              <div class="error-message"></div>
+            </div>
+            <button class="g-button request-code" [disabled]="!canSendForgotCode() || forgotCodeSent" (click)="forgotSendCode()">Получить
+              код
+            </button>
+            <div class="notice" *ngIf="forgotCodeSent">На указанный телефон было выслано SMS с кодом подтверждения. SMS
+              должно прийти в течении 5 минут. Код действителен в течении 10 минут.
+            </div>
+            <div class="form-control" *ngIf="forgotCodeSent">
+              <div class="form-control-heading">Код</div>
+              <input type="text" name="code" [(ngModel)]="forgotCode" [disabled]="!forgotCodeSent">
+              <div class="error-message"></div>
+              <a *ngIf="forgotCodeSent" class="g-link code-resend" (click)="forgotSendCode()">Отправить код повторно</a>
+            </div>
+            <div class="form-error error-message"></div>
+            <button *ngIf="forgotCodeSent" type="submit" class="g-button" [disabled]="!canSendForgot()"
+                    (click)="getForgotKey()">Далее
+            </button>
+          </div>
+        </div>
+        <div *ngIf="pageMode == 4" class="c-form-password-restore-confirmation">
+          <form>
+            <div class="form-heading"><a (click)="changePage(0)">Войти</a> или <a (click)="changePage(1)">зарегистрироваться</a>
+            </div>
+            <div class="form-control">
+              <div class="form-control-heading">Пароль</div>
+              <input type="password" name="password" [(ngModel)]="forgotNewPass">
+              <div class="error-message" *ngIf="forgotNewPass.length < 6 && forgotNewPass.length >0">Пароль должен быть не менее 6ти символов</div>
+            </div>
+            <div class="form-control">
+              <div class="form-control-heading">Пароль еще раз</div>
+              <input type="password" name="password-repeat" [(ngModel)]="forgotNewPass2">
+              <div class="error-message" *ngIf="forgotNewPass.length && forgotNewPass != forgotNewPass2">Пароли должны совпадать</div>
+            </div>
+            <button type="submit" class="g-button" (click)="forgotSavePassword()" [disabled]="forgotNewPass.length < 6 || forgotNewPass != forgotNewPass2" >Сохранить пароль</button>
+          </form>
+        </div>
+
+      </div>
+      <div class="socials">
+        <div class="c-socials"><a href="https://vk.com/" target="_blank" class="vkontakte"><span
+          class="g-icon g-icon-vkontakte"></span></a><a href="https://facebook.com/" target="_blank"
+                                                        class="facebook"><span
+          class="g-icon g-icon-facebook"></span></a><a href="https://twitter.com/" target="_blank" class="twitter"><span
+          class="g-icon g-icon-twitter"></span></a><a href="https://plus.google.com/" target="_blank"
+                                                      class="google-plus"><span
+          class="g-icon g-icon-google-plus"></span></a></div>
+      </div>
+      <div class="c-footer ">
+        <div class="g-sub-container ">
+          <div class="footer-item"><a (click)="showSubPage('rules')">Правила сервиса</a></div>
+          <div class="footer-item"><a (click)="popup(true)">Обратная связь</a></div>
+          <div class="footer-item"><a (click)="showSubPage('questions')">Часто задаваемые вопросы</a></div>
+          <div class="footer-socials">
+            <div class="c-socials"><a href="https://vk.com/" target="_blank" class="vkontakte"><span
+              class="g-icon g-icon-vkontakte"></span></a><a href="https://facebook.com/" target="_blank"
+                                                            class="facebook"><span
+              class="g-icon g-icon-facebook"></span></a><a href="https://twitter.com/" target="_blank"
+                                                           class="twitter"><span
+              class="g-icon g-icon-twitter"></span></a><a
+              href="https://plus.google.com/" target="_blank" class="google-plus"><span
+              class="g-icon g-icon-google-plus"></span></a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-name="feedback" class="c-popup c-popup-feedback" *ngIf="showFeedback">
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="close" (click)="popup(false)">
+            <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+          </div>
+
+          <h2>Хотите связаться с нами?</h2>
+          <p>
+            Если у вас есть какие-либо вопросы или предложения по развитию
+            сервиса или сотрудничеству — пишите, и мы постараемся учесть ваше мнение.
+          </p>
+          <feedback-form (onSended)="popup(false)"></feedback-form>
+        </div>
+      </div>
+      <div class="overlay"></div>
+    </div>
+    <div data-name="rules" class="sub-page">
+      <div class="c-sub-page-rules">
+        <div class="c-header">
+          <div class="g-sub-container"><a (click)="hideSubPage()" class="back"><span
+            class="g-icon g-icon-angle-left"></span><span class="text">Назад</span></a><a (click)="hideSubPage()"
+                                                                                          class="logo"></a></div>
+        </div>
+        <div class="page-content">
+          <div class="g-sub-container">
+            <h1>StumbleUpon Privacy Policy</h1>
+            <p>
+
+              StumbleUpon respects the privacy of its users. This Privacy Policy (“Privacy Policy”)
+              informs you of StumbleUpon’s policies and practices regarding the collection and use
+              of information you submit to us or which we collect about you through our Services
+              and to inform you of options that you have to control or restrict the availability
+              and use of your information. preferences). Certain Non-Identifying Information
+              would be considered a part of your Personal Information if it were combined with
+              other identifiers (for example, combining your zip or postal code with your street address)
+              in a way that enables you to be identified. But the same pieces of information are
+              considered Non-Identifying Information when they are taken alone or combined only
+              with other Non-Identifying information (for example, your viewing preferences).
+            </p>
+            <div class="row">
+              <div class="half">
+                <div class="list-heading">Нумерация:</div>
+                <ol>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                </ol>
+              </div>
+              <div class="half">
+                <div class="list-heading">Пункты:</div>
+                <ul>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                  <li>
+                    <div class="li-content">Personal Information if it were combined with other identifiers</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <h2>StumbleUpon Privacy Policy</h2>
+            <p>
+
+              StumbleUpon respects the privacy of its users. This <a class="link">Privacy Policy</a> (“Privacy Policy”)
+              informs you of StumbleUpon’s policies and practices regarding the collection and use
+              of information you submit to us or which we collect about you through our Services
+              and to inform you of options that you have to control or restrict the availability
+              and use of your information. preferences). Certain Non-Identifying Information
+              would be considered a part of your Personal Information if it were combined with
+              other identifiers (for example, combining your zip or postal code with your street address)
+              in a way that enables you to be identified. <strong>But the same pieces of information</strong> are
+              considered Non-Identifying Information when they are taken alone or combined only
+              with other Non-Identifying information (for example, your viewing preferences).
+            </p>
+            <div class="block">
+              <div class="image u-left"><img src="assets/images/page-rules-sample.jpg"></div>
+              <h2>StumbleUpon Privacy Policy</h2>
+              <p>
+
+                StumbleUpon respects the privacy of its users. This <a class="link">Privacy Policy</a> (“Privacy
+                Policy”)
+                informs you of StumbleUpon’s policies and practices regarding the collection and use
+                of information you submit to us or which we collect about you through our Services
+                and to inform you of options that you have to control or restrict the availability
+                and use of your information. preferences). Certain Non-Identifying Information
+                would be considered a part of your Personal Information if it were combined with
+                other identifiers (for example, combining your zip or postal code with your street address)
+                in a way that enables you to be identified. <strong>But the same pieces of information</strong> are
+                considered Non-Identifying Information when they are taken alone or combined only
+                with other Non-Identifying information (for example, your viewing preferences).
+              </p>
+              <p>
+
+                StumbleUpon respects the privacy of its users. This <a class="link">Privacy Policy</a> (“Privacy
+                Policy”)
+                informs you of StumbleUpon’s policies and practices regarding the collection and use
+                of information you submit to us or which we collect about you through our Services
+                and to inform you of options that you have to control or restrict the availability
+                and use of your information. preferences). Certain Non-Identifying Information
+                would be considered a part of your Personal Information if it were combined with
+                other identifiers (for example, combining your zip or postal code with your street address)
+                in a way that enables you to be identified. <strong>But the same pieces of information</strong> are
+                considered Non-Identifying Information when they are taken alone or combined only
+                with other Non-Identifying information (for example, your viewing preferences).
+              </p>
+            </div>
+            <h2>StumbleUpon Privacy Policy</h2>
+            <p>
+
+              StumbleUpon respects the privacy of its users. This <a class="link">Privacy Policy</a> (“Privacy Policy”)
+              informs you of StumbleUpon’s policies and practices regarding the collection and use
+              of information you submit to us or which we collect about you through our Services
+              and to inform you of options that you have to control or restrict the availability
+              and use of your information. preferences). Certain Non-Identifying Information
+              would be considered a part of your Personal Information if it were combined with
+              other identifiers (for example, combining your zip or postal code with your street address)
+              in a way that enables you to be identified. <strong>But the same pieces of information</strong> are
+              considered Non-Identifying Information when they are taken alone or combined only
+              with other Non-Identifying information (for example, your viewing preferences).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-name="questions" class="sub-page">
+      <div class="c-sub-page-questions">
+        <div class="c-header">
+          <div class="g-sub-container"><a (click)="hideSubPage()" class="back"><span
+            class="g-icon g-icon-angle-left"></span><span class="text">Назад</span></a><a (click)="hideSubPage()"
+                                                                                          class="logo"></a></div>
+        </div>
+        <div class="page-content">
+          <div class="g-sub-container">
+            <div class="columns">
+              <div class="column">
+                <div class="items">
+                  <div class="item-container" *ngFor="let f of faq; let i = index">
+                    <div class="item"  *ngIf="i%2">
+                      <div class="question-container"><span class="g-icon g-icon-question"></span>
+                        <div class="question">{{f.title}}</div>
+                      </div>
+                      <div class="answer-container">
+                        <p  class="q"  [ngClass]="{'answer':!f.expanded}">{{f.body}}</p>
+                        <a class="answer-expand" *ngIf="!f.expanded" (click)="f.expanded = true">
+                          <span >Развернуть</span>
+                          <span class="g-icon g-icon-angle-down"></span>
+                        </a>
+                        <a class="answer-collapse" *ngIf="f.expanded" (click)="f.expanded = false">
+                          <span>Свернуть</span>
+                          <span class="g-icon g-icon-angle-up"></span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="items">
+                  <div class="item-container" *ngFor="let f of faq; let i = index">
+                    <div class="item"  *ngIf="i%2 == 0">
+                      <div class="question-container"><span class="g-icon g-icon-question"></span>
+                        <div class="question">{{f.title}}</div>
+                      </div>
+                      <div class="answer-container">
+                        <p  class="q"  [ngClass]="{'answer':!f.expanded}">{{f.body}}</p>
+                        <a class="answer-expand" *ngIf="!f.expanded" (click)="f.expanded = true">
+                          <span >Развернуть</span>
+                          <span class="g-icon g-icon-angle-down"></span>
+                        </a>
+                        <a class="answer-collapse" *ngIf="f.expanded" (click)="f.expanded = false">
+                          <span>Свернуть</span>
+                          <span class="g-icon g-icon-angle-up"></span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>

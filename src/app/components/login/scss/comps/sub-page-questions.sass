@@ -1,0 +1,99 @@
+.c-sub-page-questions
+  padding-bottom: 50px
+
+  .q
+    transition: height 0.5s ease-out
+
+  .columns
+    +clearfix
+    margin-top: 40px
+
+  .column
+    width: 50%
+    float: left
+
+    &:nth-child(1)
+      padding-right: 13px
+
+    &:nth-child(2)
+      padding-left: 13px
+
+  .item
+    padding: 20px
+    box-shadow: 0 0 7px rgba(140, 155, 165, 0.15)
+    margin-bottom: 25px
+
+  .question-container
+    position: relative
+    border-bottom: 1px solid #d9e7f1
+    padding-bottom: 15px
+
+  .question
+    color: #175682
+    font-size: 18px
+    padding-left: 25px
+
+  .g-icon-question
+    position: relative
+    top: 2px
+    color: #27c24c
+    float: left
+    font-size: 20px
+
+  .answer-container
+    position: relative
+    padding-top: 10px
+    padding-bottom: 15px
+
+  .answer-expand, .answer-collapse
+    position: absolute
+    right: 0
+    bottom: 0
+    text-transform: uppercase
+    color: #27c24c
+    font-size: 12px
+    font-weight: 600
+
+  .answer-expand .g-icon,
+  .answer-collapse .g-icon
+    position: relative
+    font-size: 20px
+    top: 4px
+    margin-left: 5px
+
+  .answer-container:not(.expanded) .answer-expand
+    display: block
+  .answer-container.expanded .answer-collapse
+    display: block
+
+  .answer
+    height: 85px !important
+    overflow: hidden
+  .answer-container.expanded .answer
+    height: auto
+
+  .ellip
+    display: block
+    height: 100%
+
+  .ellip-line
+    display: inline-block
+    text-overflow: ellipsis
+    white-space: nowrap
+    word-wrap: normal
+    max-width: 100%
+
+  .ellip, .ellip-line
+    position: relative
+    overflow: hidden
+
+  .answer-container.expanded .ellip-line
+    overflow: auto
+    white-space: normal
+
+  @media (max-width: 1199px)
+    .column
+      float: none
+      width: 100%
+      max-width: 800px
+      margin: auto

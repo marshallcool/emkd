@@ -1,0 +1,26 @@
+<section class="cntnt">
+	<div class="cntntHdr">
+		<div class="center">
+			<div class="cntntHdr-link">
+				<a routerLink="/{{urls.profile.index}}">Профиль</a>
+				<span> / Подтверждение e-mail</span>
+			</div>
+			<h2 class="cntntHdr-titleSmall">Подтверждение e-mail</h2>
+		</div>
+	</div>
+
+	<div class="center">
+		<div class="cntntBlock cnfrmEmail">
+			<div *ngIf="success" class="cnfrmEmail-success">
+				<i class="fa fa-check-square-o" aria-hidden="true"></i>
+				<span>Адрес e-mail успешно подтверждён.</span>
+			</div>
+
+			<div *ngIf="error" class="cnfrmEmail-error">
+				<i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+				<span *ngIf="error">Ошибка подтверждения адреса e-mail: "{{error}}".</span>
+				<span *ngIf="!key">Для подтверждения адреса e-mail необходим ключ подтверждения.</span>
+			</div>			
+		</div>
+	</div>
+</section>

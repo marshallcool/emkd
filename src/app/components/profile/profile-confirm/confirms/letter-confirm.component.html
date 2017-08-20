@@ -1,0 +1,92 @@
+<section class="cntnt">
+	<div class="cntntHdr">
+		<div class="center">
+			<div class="cntntHdr-link">
+				<a routerLink="/{{urls.profile.index}}">Профиль</a>
+				<a routerLink="/{{urls.profile.confirm}}"> / Подтверждение аккаунта</a>
+				<span> / Письмом</span>
+			</div>
+			<h2 class="cntntHdr-titleSmall">Подтверждение аккаунта письмом</h2>
+		</div>
+	</div>
+
+	<div class="center">
+		<div class="cntntBlock prflLetter">
+			
+			<div *ngIf="loading" class="cntnt-preloader">
+				<img src="/assets/images/preloader.gif" alt="preloader"/>
+			</div>
+
+			<form *ngIf="step === 1" class="popup-form" [formGroup]="form" (ngSubmit)="nextStep()">
+				<p class="popup-info" style="margin-top: 0;">
+					При выборе данного типа подтверждения вам отправляется заказное письмо, в котором указан код.
+					ФИО получателя берётся автоматически из вашего профиля, а адрес получения письма вы можете указать самостоятельно.
+					Для получения этого письма вам необходимо лично прийти в любое отделение почты России с паспортом.
+					После получения письма вы вводите указанный в нём код подтверждения.
+				</p>
+
+				<label>
+					<span class="popup-label">Кому</span>
+					<input class="popup-input" value="{{getFullName()}}" readonly />
+				</label>
+
+				<label [ngClass]="{'popup-hasError':!form.controls['address'].valid && form.controls['address'].touched || addrError}" >
+					<span class="popup-label">Адрес</span>
+					<input 
+						#address
+						class="popup-input"
+						formControlName="address"
+						placeholder="Начните вводить адрес"
+					/>
+					<app-input-validate
+						[control]="form.controls['address']"
+						[touched]="true"
+					></app-input-validate>
+					<p *ngIf="addrError" class="popup-error">{{addrError}}</p>
+				</label>
+
+				<label [ngClass]="{'popup-hasError':!form.controls['postcode'].valid && form.controls['postcode'].touched}" >
+					<span class="popup-label">Индекс</span>
+					<input 
+						class="popup-input"
+						type="text"
+						formControlName="postcode"
+						placeholder="XXXXXX"
+						pattern="^\d*$"
+					/>
+					<app-input-validate
+						[control]="form.controls['postcode']"
+						[touched]="true"
+					></app-input-validate>
+				</label>
+
+				<div class="popup-submit">
+					<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+					<button class="popup-btn popup-btn--cancel" routerLink="/{{urls.profile.confirm}}">Назад</button>
+					<button type="submit" class="popup-btn" [disabled]="!form.valid || error || addrError">Далее</button>
+				</div>
+			</form>
+
+
+			<div *ngIf="step === 2">
+				<p>Письмо с кодом активации будет выслано по следующему адресу:</p>
+				<br>
+
+				<div>
+					<b>{{getFullName()}}</b><br>
+					<b>{{form.controls['postcode'].value}}, {{form.controls['address'].value}}</b>
+				</div>
+				
+				<br>
+				<p>Ориентировочно письмо будет идти XX дней. Код из письма действителен в течении XX дней, с сегодняшнего дня.</p>
+
+				<div class="popup-submit">
+					<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+					<button class="popup-btn popup-btn--cancel" (click)="prevStep()">Назад</button>
+					<button class="popup-btn" (click)="sendLetter()">Выслать письмо</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>

@@ -1,0 +1,55 @@
+<div class="popup">
+	<div *ngIf='step==1'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title">Изменить Email</div>
+
+			<form class="popup-form" [formGroup]="emailForm" (ngSubmit)="sendKeyToNewEmail()">
+				<label [ngClass]="{'popup-hasError':!emailForm.controls['email'].valid && emailForm.controls['email'].touched}" >
+					<span class="popup-label">Введите новый Email</span>
+					<input 
+						class="popup-input"
+						type="text"
+						formControlName="email"
+						[placeholder]="cnst.EMAIL_PLCHLDR"
+						[textMask]="{mask:cnst.EMAIL_MASK}"
+					/>
+					<app-input-validate
+						[control]="emailForm.controls['email']"
+						[touched]="true"
+					></app-input-validate>
+				</label>
+
+				<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+
+				<div class="popup-submit">
+					<button type="submit" class="popup-btn" [disabled]="!emailForm.valid">Сохранить</button>
+				</div>
+
+				<div class="popup-info"></div>
+			</form>
+
+		</div>
+	</div>
+
+	<div *ngIf='step==2'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title popup-title--sccss">Ссылка для подтверждения выслана на {{newEmail}}</div>
+
+			<div class="popup-submit">
+				<button class="popup-btn" (click)="closePopup()" >Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>

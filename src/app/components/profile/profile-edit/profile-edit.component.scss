@@ -1,0 +1,265 @@
+@import "../../../scss/constants.scss";
+
+$trnstTime: 0.35s;
+
+.prflEdit {
+	&-avatar {
+		position: absolute;
+		width: 140px;
+		height: 140px;
+		transition: opacity $trnstTime;
+
+		img {
+			visibility: visible;
+			opacity: 1;
+			transition: opacity $trnstTime;
+		}
+
+		&:before {
+			content: '';
+			position: absolute;
+	    background: #609aec;
+	    border-radius: 50%;
+	    width: 38px;
+	    height: 38px;
+	    top: 50%;
+	    margin-top: -19px;
+	    left: 50%;
+	    margin-left: -19px;
+		}
+
+		&:after {
+			content: '';
+			background: url(/assets/images/icon_pencil_hover.png) no-repeat center;
+	    position: absolute;
+	    width: 32px;
+	    height: 32px;
+	    top: 50%;
+	    left: 50%;
+	    margin-top: -16px;
+	    margin-left: -16px;
+		}
+
+		&:before,
+		&:after {
+	    visibility: hidden;
+	    opacity: 0;
+	    transition: opacity $trnstTime;
+		}
+
+		&:hover {
+			cursor: pointer;
+			background: #f4f8fa;
+			border: 1px solid #eff0f3;
+			border-radius: 5px;
+
+			img {
+				visibility: hidden;
+				opacity: 0;
+			}
+			
+			&:before,
+			&:after {
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+	}
+
+	&-form {
+		margin-left: 169px;
+		padding-bottom: 20px;
+	}
+
+	&-title {
+		font-family: $prflFontBold;
+		font-size: 16px;
+		line-height: 20px;
+		color: #609aec;
+		margin-bottom: 15px;
+		
+		&:first-child {
+			padding-top: 6px;	
+		}
+	}
+
+	&-block {
+		margin-bottom: 15px;
+	}
+
+	&-clmn {
+		padding: 10px 0;
+		display: inline-block;
+		vertical-align: top;
+		width: 50%;
+
+		&:nth-child(2n+1) {
+			margin-left: -4px;
+		}
+	}
+
+	&-row {
+		margin-top: 10px;
+	}
+
+	&-label {
+		display: inline-block;
+    width: 20%;
+	}
+
+	&-hasError {
+		input, textarea {
+			border-color: $prflColorError;
+	    box-shadow: 0 0 3px $prflColorError;
+		}
+	}
+
+	&-input {
+    width: 70%;
+    color: #403f3f;
+    border: 1px solid #d7d8dc;
+		border-radius: 5px;
+		font-size: 14px;
+		line-height: 30px;
+		padding: 0 10px;
+
+		&[readonly] {
+    	cursor: pointer;
+    	// transition: background 0.2s ease-in-out, background-position 0s;
+
+    	&:hover {
+    		border-color: $prflInputHover;
+    		background: url('/assets/images/icon_pencil.png') center no-repeat;
+    		background-position: right 10px center;
+    		// background: url('/assets/images/icon_pencil_hover.png') center no-repeat;
+    	}
+		}
+	}
+
+	&-drpdwn {
+		width: 70%;
+		display: inline-block;
+		vertical-align: middle;
+		height: 32px;
+	}
+
+	&-submit {
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	&-sbmtError {
+		color: #f26c4f;
+		font-size: 14px;
+		line-height: 18px;
+		text-align: center;
+	}
+
+	&-title--passport {
+		display: block;
+		padding-bottom: 9px;
+		border-bottom: 1px solid #d8dae5;
+		margin-bottom: 10px !important;
+	}
+
+	&-row--passport {
+		.prflEdit-input:nth-child(2) {
+			width: 15%;
+		}
+		.prflEdit-label:nth-child(3) {
+			width: 20%;
+			text-align: center;
+			margin-left: -4px;
+		}
+		.prflEdit-input:nth-child(4) {
+			width: 35%;
+			margin-left: -4px;
+		}
+	}
+
+	&-row--textarea {
+		.prflEdit-label {
+			vertical-align: top;
+	    padding-top: 8px;
+		}
+		.prflEdit-input {
+			min-height: 79px;
+		}
+	}
+}
+
+
+
+@media (max-width: 1200px) {
+	.prflEdit {
+		&-avatar {
+			position: relative;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		&-form {
+			margin-left: 0;
+		}
+		
+	}
+}
+
+@media (max-width: 980px) {
+	.prflEdit {
+		&-avatar {
+			margin-bottom: 15px;
+		}
+
+		&-clmn {
+			display: block;
+			margin-left: 0;
+			width: auto;
+			max-width: 500px;
+			padding: 0;
+
+			&:nth-child(2n+1){
+				margin-left: 0;
+			}
+		}
+
+		&-input,
+		&-drpdwn {
+			width: 80%;
+    	margin-left: -4px;
+		}
+
+		&-row--passport &-input:nth-child(4) {
+			width: 45%;
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.prflEdit {
+		&-clmn {
+			max-width: auto;
+		}
+
+		&-label,
+		&-input,
+		&-row--passport &-input:nth-child(2),
+		&-row--passport &-label:nth-child(3),
+		&-row--passport &-input:nth-child(4),
+		&-drpdwn {
+			display: block;
+			width: 100%;
+			margin-left: 0;
+			text-align: left;
+		}
+
+		&-row--passport &-label:nth-child(3) {
+			margin-top: 5px;
+		}
+
+		&-label {
+			margin-bottom: 6px;
+		}
+	}
+}
+

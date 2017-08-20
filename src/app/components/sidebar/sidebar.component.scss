@@ -1,0 +1,179 @@
+@import "../../scss/constants.scss";
+
+.sidebar {
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  width: $sidebar-width;
+  top: 0px;
+  background-color: $sidebar-color;
+  z-index: 1100;
+  font-family: "Bliss Pro", sans-serif;
+  font-size: 15px;
+  font-weight: 200;
+  color: $sidebar-text-color;
+  transition: width 0.2s;
+  visibility: visible;
+  opacity: 1;
+
+  a {
+    color: $sidebar-text-color;
+    text-decoration: none;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &.is-hide {
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+  }
+
+  &-close {
+    position: absolute;
+    right: 6px;
+    top: 5px;
+    font-size: 24px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+
+    &:hover {
+      background: #dee7ec;
+      border-radius: 50%;
+      color: #568cd8;
+    }
+
+    span {
+      position: relative;
+      top: -5px;
+    }
+  }
+
+  &-logo-wrapper {
+    overflow: hidden;
+    text-align: center;
+  }
+
+  &-logo {
+    width: 180px;
+  }
+
+  &-items {
+
+  }
+
+  .item {
+    text-align: left;
+    padding-left: 20px;
+  
+    .title {
+      font-family: "Bliss Pro", sans-serif;
+    }
+
+    a {
+      display: block;
+      padding: 10px 0px;
+    }
+
+    img {
+      position: relative;
+      top: 2px;
+    }
+
+    .sub {
+      padding-left: 25px;
+
+      a {
+        margin: 0px !important;
+      }
+    }
+
+    &:hover {
+      background-color: $sidebar-hover-color;
+    }
+  }
+
+  .badge {
+    margin-right: 15px !important;
+    background-color: #fff;
+    color: black;
+    font-weight: 300;
+    border-radius: 5px;
+    font-size: 10px;
+  }
+
+  .disclaimer {
+    text-align: left;
+    position: absolute;
+    bottom: 20px;
+    font-family: "Myriad Pro";
+    font-size: 12px;
+    line-height: 16px;
+    padding-left: 20px;
+    overflow: hidden;
+    
+    .copyright {
+      padding-bottom: 10px;
+    }
+
+    .questions {
+      width: $sidebar-width - 20px;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+}
+
+
+
+@media (max-width: 600px) {
+  .sidebar {
+    &-close {
+      font-size: 29px;
+      top: 9px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+    }
+
+    .disclaimer {
+      bottom: 10px;
+
+      .copyright {
+        padding-bottom: 10px;
+      }
+    }
+
+  }
+}
+
+
+@media (max-height: 600px) {
+  .sidebar {
+    .item {
+      a {
+        padding: 8px 0;
+      }
+    }
+  }
+}
+
+
+@media (max-height: 560px) {
+  .sidebar {
+    &-items {
+      height: calc(100% - 70px);
+      overflow-y: auto;
+    }
+
+    .disclaimer {
+      visibility: hidden;
+    }
+  }
+}
+

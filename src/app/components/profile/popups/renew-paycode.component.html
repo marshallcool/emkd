@@ -1,0 +1,40 @@
+<div class="popup">
+	<div *ngIf='step==1'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title">Запросить новый идентификатор</div>
+
+			<div class="popup-info">
+				После создания нового идентификатора, оплата с указанием прошлого кода не будет работо&shy;способной. 
+				Вы уверены, что хотите запросить новый идентифи&shy;катор?
+			</div>
+
+			<div class="popup-submit">
+				<div class="popup-sbmtError" *ngIf="error">{{error}}</div>
+				<button class="popup-btn popup-btn--cancel" (click)="closePopup()">Нет</button>
+				<button class="popup-btn" (click)="renewPayCode()">Да</button>
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf='step==2'>
+		<div class="popup-content">
+			<div *ngIf="loading" class="popup-loader"></div>
+
+			<div class="popup-close" (click)="closePopup()" >
+				<span>&times;</span>
+			</div>
+
+			<div class="popup-title popup-title--sccss">Новый идентификатор {{newPayCode}} успешно создан</div>
+
+			<div class="popup-submit">
+				<button class="popup-btn" (click)="closePopup()">Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>

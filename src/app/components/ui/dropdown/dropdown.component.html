@@ -1,0 +1,16 @@
+<div class="drpdwn">
+	<div class="drpdwn-content">
+	  <span class="drpdwn-button" 
+	  	(click)="toggleMenu()"
+	  	value="activeValue.value"
+	  >{{activeValue.label}}</span>
+
+	  <ul class="drpdwn-menu" [ngClass]="{'is-open':open}">
+	    <li *ngFor="let value of values"
+	    	class="drpdwn-menuItem"
+	      (click)="setActive(value)"
+	      [ngClass]="{'is-hidden': !value.visible}"
+	    >{{value.label}}</li>
+	  </ul>
+  </div>
+</div>

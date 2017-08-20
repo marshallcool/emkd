@@ -1,0 +1,76 @@
+<section class="cntnt cntrs">
+	<div *ngIf="step !== 0" class="cntntHdr">
+		<div class="center" [ngSwitch]="step">
+
+			<div *ngSwitchCase='1'>
+				<h2 class="cntntHdr-left cntntHdr-title">Выберите объект недвижимости</h2>
+
+				<div class="cntntHdr-right">
+					<div *ngSwitchCase="1" class="cntntHdr-confirm">
+						<a routerLink="/{{urls.estate.add}}" class="cntnt-btn">Добавить объект</a>
+					</div>
+				</div>
+			</div>
+
+
+			<div *ngSwitchCase='2'>
+				<div class="cntntHdr-left">
+					<h2 class="cntntHdr-text">Показания счётчиков</h2>
+					<p class="cntntHdr-subtext">{{actvEstate}}</p>
+				</div>
+
+				<div class="cntntHdr-right" [ngSwitch]="step">
+					<div class="cntntHdr-confirm">
+						<a (click)="step=1" class="cntnt-btn">Выбрать другой объект</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<div class="center" [ngSwitch]="step">
+		<div *ngSwitchCase="0" class="cntntBlock ban" (click)="step=1">
+			Ввод показаний счётчиков доступен с 10 по 20 число каждого месяца
+		</div>
+
+
+		<div *ngSwitchCase="1" class="cntntBlock estates">
+			<ul class="estates-items">
+				<li *ngFor="let estate of estates; let i = index" class="estate" (click)="step=2;actvEstate=estate;">
+					<b class="estate-title">Квартира {{i+1}}</b>
+					<p class="estate-addr">{{estate}}</p>
+				</li>
+			</ul>
+		</div>
+		
+
+		<div *ngSwitchCase="2" class="measrs">
+			<form *ngFor="let measr of measures" class="cntntBlock cntntBlock--inline">
+				<h3 class="measrs-title">{{measr}}</h3>
+				
+				<label class="measrs-row">
+					<p class="measrs-name">Лицевой счёт (паспорт)</p>
+					<input class="measrs-input" placeholder="XX-XXXXXXX" />
+				</label>
+
+				<label class="measrs-row">
+					<p class="measrs-name">Комментарий</p>
+					<textarea class="measrs-input" placeholder="Где расположен счетчик?"></textarea>
+				</label>
+
+				<div class="measrs-row">				
+					<a routerLink="/{{urls.counters.history}}">История показаний</a>
+				</div>
+
+				<div class="measrs-row">
+					<button class="measrs-btn" (click)="sendMeasures()">Отправить</button>
+				</div>
+			</form>
+
+		</div>
+
+	</div>
+</section>

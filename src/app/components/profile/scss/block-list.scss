@@ -1,0 +1,102 @@
+.blcklist {
+	width: 50%;
+	display: inline-block;
+	padding-right: 15px;
+	box-sizing: border-box;
+	vertical-align: top;
+
+	&--second {
+		margin-left: -4px;
+		padding-left: 15px;
+		padding-right: 0;
+	}
+
+	&-content {
+		font-family: "PTSansRegular";
+		font-size: 14px;
+		line-height: 18px;
+		color: #403f3f;
+	}
+
+	&-title {
+		text-align: center;
+		font-family: "PTSansBold";
+    font-size: 16px;
+    line-height: 20px;
+    color: #609aec;
+    border-bottom: 1px solid #d8dae5;
+   	padding-bottom: 12px;
+	}
+
+	&-items {
+		list-style: none;
+		padding-left: 0;
+		margin: 0;
+	}
+
+	&-item {
+		cursor: pointer;
+		padding: 8px 10px;
+		border: 1px solid transparent;
+		transition: all 0.2s ease;
+		position: relative;
+
+		&:after {
+			content: url('/assets/images/icon_pencil.png');
+	    position: absolute;
+	    right: 5%;
+	    top: 18px;
+	    visibility: hidden;
+	    opacity: 0;
+	    transition: opacity 0.2s ease;
+		}
+
+		&:nth-child(2n) {
+			background: #f4f8fa;
+		}
+
+		&:hover {
+			border-color: #79ADF6;;
+
+			&:after {
+				visibility: visible;
+				opacity: 1;
+			}
+
+			.blcklist-add {
+				color: #609aec;
+			}
+		}
+	}
+
+	&-addr {
+			
+	}
+
+	&-status {
+		font-size: 12px;
+		line-height: 18px;
+		color: #8a959b;
+	}
+
+	&-btn {
+		text-align: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+
+    i {
+    	padding-right: 5px;
+    }
+	}
+
+}
+
+
+@media (max-width: 600px) {
+	.blcklist {
+		display: block;
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+	}
+}
